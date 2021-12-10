@@ -31,6 +31,21 @@ class ResultsScreen extends StatelessWidget {
   String get player2Name =>
       arguments.isPlayer2Computer ? 'Computer' : 'Player 2';
 
+  String? get winnerName {
+    if (arguments.player1Choice == arguments.player2Choice) {
+      return null;
+    } else if (arguments.player1Choice == GameChoice.rock &&
+            arguments.player2Choice == GameChoice.scissors ||
+        arguments.player1Choice == GameChoice.paper &&
+            arguments.player2Choice == GameChoice.rock ||
+        arguments.player1Choice == GameChoice.scissors &&
+            arguments.player2Choice == GameChoice.paper) {
+      return 'Player 1';
+    } else {
+      return player2Name;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +57,7 @@ class ResultsScreen extends StatelessWidget {
               const Text('Player1', style: kPlayerNameTextStyle),
               GameChoiceCard(choice: arguments.player1Choice, size: 150),
               ResultsBar(
-                player2Name: player2Name,
+                winnerName: winnerName,
                 onMenuPressed: () => Navigator.pop(context),
                 onReplayPressed: () => Navigator.popAndPushNamed(
                   context,

@@ -5,12 +5,12 @@ import 'inner_rounds_clipper.dart';
 class ResultsBar extends StatelessWidget {
   const ResultsBar({
     Key? key,
-    required this.player2Name,
+    required this.winnerName,
     required this.onReplayPressed,
     required this.onMenuPressed,
   }) : super(key: key);
 
-  final String player2Name;
+  final String? winnerName;
   final VoidCallback onReplayPressed;
   final VoidCallback onMenuPressed;
 
@@ -35,7 +35,7 @@ class ResultsBar extends StatelessWidget {
               onPressed: onReplayPressed,
             ),
             Text(
-              'Winner $player2Name',
+              winnerName == null ? 'Draw' : 'Winner $winnerName',
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
