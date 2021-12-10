@@ -29,7 +29,7 @@ class _ChoiceMakerState extends State<ChoiceMaker> {
           aspectRatio: 1,
           child: GestureDetector(
             child: Container(
-              margin: const EdgeInsets.all(16.0),
+              margin: const EdgeInsets.all(64.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
                 border: Border.all(color: Colors.blue, width: 6),
@@ -42,7 +42,7 @@ class _ChoiceMakerState extends State<ChoiceMaker> {
                           color: Colors.blue,
                         )
                       : Text(
-                          candidateData.first.toString(),
+                          currentChoice.toString(),
                         )
                   : Text(
                       candidateData.first.toString(),

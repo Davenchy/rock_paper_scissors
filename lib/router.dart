@@ -24,8 +24,12 @@ class MyRouter {
           ),
         );
       case ResultsScreen.routeName:
+        assert(
+            settings.arguments is ResultsScreenArguments, 'Invalid arguments');
         return MaterialPageRoute<void>(
-          builder: (BuildContext context) => const ResultsScreen(),
+          builder: (BuildContext context) => ResultsScreen(
+            arguments: settings.arguments as ResultsScreenArguments,
+          ),
         );
       default:
         return null;
