@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:xo_game/screens/results_screen.dart';
+import 'package:flutter/services.dart';
 
+import 'results_screen.dart';
 import '../constants.dart';
 import '../widgets/choice_maker.dart';
 import '../widgets/game_bar.dart';
@@ -35,6 +36,20 @@ class _GameScreenState extends State<GameScreen> {
   bool isPlayer2 = false;
 
   bool get isComputerPlaying => widget.arguments.isComputerPlaying;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.dark,
+        ),
+      );
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

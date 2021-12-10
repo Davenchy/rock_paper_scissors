@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xo_game/utils/game_choices.dart';
 
+import '../utils/game_choices.dart';
 import '../constants.dart';
 
 class PlayerChoices extends StatelessWidget {
@@ -11,7 +11,7 @@ class PlayerChoices extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        // TODO: fix shuffle not working between players becuase no set state between them
+        // TODO: fix shuffle not working between players because no set state between them
         for (final choice in List.from(GameChoice.values)..shuffle())
           Draggable<GameChoice>(
             data: choice,
