@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.davenchy.xo_game">
    <application
-        android:label="xo_game"
+        android:label="XOGame"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
