@@ -45,11 +45,16 @@ class _GameScreenState extends State<GameScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GameBar(
-                playerName: 'Player1',
+                playerName: isPlayer2
+                    ? isComputerPlaying
+                        ? 'Computer'
+                        : 'Player2'
+                    : 'Player1',
                 timer: 6,
                 onMenuPressed: () => Navigator.pop(context),
               ),
               ChoiceMaker(
+                choice: isPlayer2 ? player2Choice : player1Choice,
                 onChoice: onPlayerChoice,
               ),
               const Padding(
@@ -64,6 +69,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   onPlayerChoice(GameChoice choice) {
+    // TODO: show dialog between player1 and player2
     // TODO: delay show results for both player2 and computer
     setState(() {
       if (!isPlayer2) {
@@ -97,6 +103,7 @@ class _GameScreenState extends State<GameScreen> {
       arguments: ResultsScreenArguments(
         player1Choice: player1Choice!,
         player2Choice: player2Choice!,
+        isPlayer2Computer: isComputerPlaying,
       ),
     );
   }
