@@ -17,8 +17,11 @@ class MyRouter {
         );
 
       case GameScreen.routeName:
+        assert(settings.arguments is GameScreenArguments, 'Invalid arguments');
         return MaterialPageRoute<void>(
-          builder: (BuildContext context) => const GameScreen(),
+          builder: (BuildContext context) => GameScreen(
+            arguments: settings.arguments as GameScreenArguments,
+          ),
         );
       case ResultsScreen.routeName:
         return MaterialPageRoute<void>(
