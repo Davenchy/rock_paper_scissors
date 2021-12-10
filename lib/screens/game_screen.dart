@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _GameScreenState extends State<GameScreen> {
   bool isPlayer2 = false;
 
   bool get isComputerPlaying => widget.arguments.isComputerPlaying;
+  String get player2Name => isComputerPlaying ? 'Computer' : 'Player 2';
 
   @override
   void initState() {
@@ -84,22 +86,53 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   onPlayerChoice(GameChoice choice) {
-    // TODO: show dialog between player1 and player2
-    // TODO: delay show results for both player2 and computer
+    // TODO: add timer
     setState(() {
-      if (!isPlayer2) {
-        player1Choice = choice;
-        isPlayer2 = true;
-
-        if (isComputerPlaying) {
-          player2Choice = getRandomChoice();
-          showResults();
-        }
-      } else {
+      if (isPlayer2) {
         player2Choice = choice;
-        showResults();
+      } else {
+        player1Choice = choice;
       }
     });
+
+    if (!isPlayer2) {
+      showDialog(
+        context: context,
+        barrierDismissible: !isComputerPlaying,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Now it\'s $player2Name turn'),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  setState(
+                    () {
+                      isPlayer2 = true;
+                      if (isComputerPlaying) player2Choice = getRandomChoice();
+                    },
+                  );
+
+                  if (isComputerPlaying) {
+                    Timer(
+                      const Duration(seconds: 1),
+                      () {
+                        Navigator.pop(context);
+                        showResults();
+                      },
+                    );
+                  } else {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showResults();
+    }
   }
 
   GameChoice getRandomChoice() {
