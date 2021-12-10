@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home_screen.dart';
-import 'screens/game_screen.dart';
-import 'screens/results_screen.dart';
+import 'router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -12,11 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'XO Game',
       debugShowCheckedModeBanner: false,
-      routes: {
-        HomeScreen.routeName: (context) => const HomeScreen(),
-        GameScreen.routeName: (context) => const GameScreen(),
-        ResultsScreen.routeName: (context) => const ResultsScreen(),
-      },
+      onGenerateRoute: const MyRouter().onGenerateRoute,
     );
   }
 }
