@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 import 'results_screen.dart';
@@ -31,6 +32,10 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  late Ticker ticker;
+
+  Duration timer = Duration.zero;
+
   GameChoice? player1Choice;
   GameChoice? player2Choice;
 
@@ -41,6 +46,8 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void initState() {
+    ticker = Ticker(onTick);
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
@@ -49,8 +56,41 @@ class _GameScreenState extends State<GameScreen> {
           statusBarBrightness: Brightness.dark,
         ),
       );
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context2) {
+          return AlertDialog(
+            content: const Text('Are you ready?'),
+            actions: [
+              ElevatedButton(
+                child: const Text('Start'),
+                onPressed: () {
+                  Navigator.of(context2).pop();
+                  ticker.start();
+                },
+              ),
+              TextButton(
+                child: const Text('Back'),
+                onPressed: () {
+                  Navigator.of(context2).pop();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ticker.dispose();
+    super.dispose();
   }
 
   @override
@@ -67,11 +107,11 @@ class _GameScreenState extends State<GameScreen> {
                         ? 'Computer'
                         : 'Player2'
                     : 'Player1',
-                timer: 6,
+                timer: (kChoiceWaitDuration - timer).inSeconds,
                 onMenuPressed: () => Navigator.pop(context),
               ),
               ChoiceMaker(
-                choice: isPlayer2 ? player2Choice : player1Choice,
+                // choice: isPlayer2 ? player2Choice : player1Choice,
                 onChoice: onPlayerChoice,
               ),
               const Padding(
@@ -86,7 +126,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   onPlayerChoice(GameChoice choice) {
-    // TODO: add timer
+    ticker.stop();
     setState(() {
       if (isPlayer2) {
         player2Choice = choice;
@@ -115,13 +155,14 @@ class _GameScreenState extends State<GameScreen> {
 
                   if (isComputerPlaying) {
                     Timer(
-                      const Duration(seconds: 1),
+                      const Duration(milliseconds: 500),
                       () {
                         Navigator.pop(context);
                         showResults();
                       },
                     );
                   } else {
+                    ticker.start();
                     Navigator.pop(context);
                   }
                 },
@@ -153,6 +194,48 @@ class _GameScreenState extends State<GameScreen> {
         player2Choice: player2Choice!,
         isPlayer2Computer: isComputerPlaying,
       ),
+    );
+  }
+
+  onTick(Duration elapsed) {
+    // TODO: optimize this
+    setState(() => timer = elapsed);
+    if (elapsed < kChoiceWaitDuration) return;
+
+    ticker.stop();
+    setState(() => timer = Duration.zero);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Time is up!'),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                if (isPlayer2) {
+                  setState(() => player2Choice = getRandomChoice());
+                  showResults();
+                } else {
+                  setState(() {
+                    isPlayer2 = true;
+                    player1Choice = getRandomChoice();
+                    if (isComputerPlaying) {
+                      player2Choice = getRandomChoice();
+                      showResults();
+                    } else {
+                      ticker.start();
+                      Navigator.pop(context);
+                    }
+                  });
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
