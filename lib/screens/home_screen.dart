@@ -10,40 +10,40 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'XO - Game',
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'XO - Game',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 150),
-            HomeNavButton(
-              text: 'Player VS Player',
-              onPressed: () => Navigator.pushNamed(
-                context,
-                GameScreen.routeName,
-                arguments: const GameScreenArguments(isComputerPlaying: false),
+              const SizedBox(height: 150),
+              HomeNavButton(
+                text: 'Player VS Player',
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  GameScreen.routeName,
+                  arguments:
+                      const GameScreenArguments(isComputerPlaying: false),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            HomeNavButton(
-              text: 'Player VS Computer',
-              onPressed: () => Navigator.pushNamed(
-                context,
-                GameScreen.routeName,
-                arguments: const GameScreenArguments(isComputerPlaying: true),
+              const SizedBox(height: 20),
+              HomeNavButton(
+                text: 'Player VS Computer',
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  GameScreen.routeName,
+                  arguments: const GameScreenArguments(isComputerPlaying: true),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
