@@ -1,4 +1,4 @@
-# xo_game
+# RockPaperScissors
 
 A new Flutter project.
 
