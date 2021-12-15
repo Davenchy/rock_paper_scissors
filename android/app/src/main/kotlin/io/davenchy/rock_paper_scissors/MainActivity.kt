@@ -1,4 +1,4 @@
-package io.davenchy.xo_game
+package io.davenchy.rock_paper_scissors
 
 import io.flutter.embedding.android.FlutterActivity
 
